@@ -1,0 +1,96 @@
+"use strict";
+
+
+class SvgHelper {
+
+    static svgNS = "http://www.w3.org/2000/svg";
+
+static createTag(tagName){
+    return document.createElementNS(SvgHelper.svgNS,tagName);
+}
+
+static setAttribute(elt, name, value){
+    elt.setAttributeNS(null,name,value);  
+}
+
+static getAttribute(elt,name){
+    return elt.getAttributeNS(SvgHelper.svgNS, name);  
+}
+
+static setAttributes(elt, attrs){
+    for (const [key, value] of Object.entries(attrs)) {
+        SvgHelper.setAttribute(elt, key, value);
+    }
+}
+
+static async scale(elt, factorX, factorY) {
+    const scaleExpr = "scale("+factorX+","+factorY+")";
+    const anim = elt.animate([{ transform:  scaleExpr}],{
+        duration:2000,
+        easing:"ease-in-out"
+    });
+    await anim.finished;
+    SvgHelper.setAttribute(elt, "transform",scaleExpr);
+    return anim.finished;
+}
+
+static appendChildren(container, children){
+    children.forEach((child) => {
+        container.appendChild(child);
+    });
+}
+
+
+static computeCenterCoords(elt) {
+    let bounds = elt.getBBox();
+
+    const coords = {
+        'x' : bounds.width / 2,
+        'y' : bounds.height / 2 
+    };
+    console.log(coords);
+    return coords;
+}
+
+
+static text2svg(text, fontSize){
+    const letters = text.split("");
+    let x = 0;
+    let y = fontSize;
+    
+    let elements = new Array();
+    let tag = null;
+
+    letters.forEach((letter, idx) => {
+        x += fontSize/2 + fontSize/2;
+        tag = SvgHelper.letter2svg(letter, x, y);
+        //tag.id=idx;
+        elements.push(tag);
+    });
+    return elements;
+}
+
+
+
+static letter2svg(letter, x, y, fontSize){       
+    let tag = SvgHelper.createTag("text");
+    const attrs = {
+        "x":x,
+        "y":y,
+        "font-size":fontSize,
+        "font-variant":"small-caps",
+        "fill":this.defaultColor,
+        "class":"letter",
+        "opacity":0,
+        "ignore":(letter === '')?true:false
+    };
+    SvgHelper.setAttributes(tag, attrs);
+    let textNode = document.createTextNode(letter);
+    tag.appendChild(textNode);
+    return tag;
+}
+
+
+
+
+}

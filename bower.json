@@ -1,0 +1,10 @@
+{
+  "name": "starter",
+  "version": "0.0.0",
+  "homepage": "",
+  "author": "car3oon",
+  "license": "BSD",
+  "dependencies": {
+    "Snap.svg": "snap.svg#^0.5.1"
+  }
+}

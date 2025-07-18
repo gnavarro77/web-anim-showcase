@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+
+        <link href="style/webanim.css" rel="stylesheet"></link>
+
+    <script src="src/SvgHelper.js"></script>
+    <script src="src/LinearSequence.js"></script>
+    <script src="src/GoThroughAnim.js"></script>
+
+    <!-- bower:js -->
+    <script src="components/Snap.svg/dist/snap.svg-min.js"></script>
+    <!-- endbower -->
+
+    </head>
+<body style="background-color: azure">
+
+    <svg id="svg" xmlns="http://www.w3.org/2000/svg" height="100%" width="100%" viewBox="0 0 400 400" >
+
+        <defs><radialGradient id="my-cool-gradient" >
+            <stop offset="0%" stop-color="hsl(55, 94%, 54%)"></stop>
+            <stop offset="100%" stop-color="hsl(0, 0%, 100%)"></stop>
+            </radialGradient><filter id="ffflux-filter" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.005 0.003" numOctaves="1" seed="2" stitchTiles="stitch" x="0%" y="0%" width="100%" height="100%" result="turbulence"></feTurbulence>
+            <feGaussianBlur stdDeviation="20 0" x="0%" y="0%" width="100%" height="100%" in="turbulence" edgeMode="duplicate" result="blur"></feGaussianBlur>
+            <feBlend mode="color-dodge" x="0%" y="0%" width="100%" height="100%" in="SourceGraphic" in2="blur" result="blend"></feBlend>
+
+            </filter></defs>
+
+
+
+    </svg>
+
+    <script>
+        const root = document.getElementById("svg");
+        const container = SvgHelper.createTag("g");
+        root.appendChild(container);
+
+
+        let text = "Invente des produits innovants";
+        let letters = SvgHelper.text2svg(text, 12);
+        SvgHelper.appendChildren(container, letters);
+
+        let seq1 = null;
+        async function fadeInLetters(){
+            seq1 = new LinearSequence(letters);
+            await seq1.run(
+                [{ opacity: 0 }, { opacity: 1 }],
+                {
+                    duration: 100,
+                    easing: "ease-in-out",
+                    fill: 'forwards'
+                }
+            )
+
+        }
+
+        async function hightlightLetters(){
+            seq = new LinearSequence(letters);
+            await seq.run(
+                [{ fill: "#ffff00"}],
+                {
+                    duration: 100,
+                    easing: "linear"
+                    //fill: 'forwards'
+                }
+            )
+        }
+
+        async function allAnim(){
+            await fadeInLetters();
+            await seq1.reverse();
+            //await hightlightLetters();    
+        }
+        
+        allAnim();
+
+        //let textAnim = new TextFadeInAnim(text, 12);
+
+
+        //let promise = textAnim.run();
+
+
+    </script>
+
+</body>
+</html>
