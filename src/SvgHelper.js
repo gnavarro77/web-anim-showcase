@@ -27,10 +27,10 @@ static async scale(elt, factorX, factorY) {
     const scaleExpr = "scale("+factorX+","+factorY+")";
     const anim = elt.animate([{ transform:  scaleExpr}],{
         duration:2000,
+        fill: 'forwards',
         easing:"ease-in-out"
     });
     await anim.finished;
-    SvgHelper.setAttribute(elt, "transform",scaleExpr);
     return anim.finished;
 }
 
@@ -63,7 +63,7 @@ static text2svg(text, fontSize){
 
     letters.forEach((letter, idx) => {
         x += fontSize/2 + fontSize/2;
-        tag = SvgHelper.letter2svg(letter, x, y);
+        tag = SvgHelper.letter2svg(letter, x, y, fontSize);
         //tag.id=idx;
         elements.push(tag);
     });
@@ -78,9 +78,8 @@ static letter2svg(letter, x, y, fontSize){
         "x":x,
         "y":y,
         "font-size":fontSize,
-        "font-variant":"small-caps",
-        "fill":this.defaultColor,
         "class":"letter",
+        "fill":"#212E53",
         "opacity":0,
         "ignore":(letter === '')?true:false
     };

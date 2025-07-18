@@ -8,13 +8,11 @@
     },
     "author": "car3oon",
     "license": "BSD",
-    "dependencies": {
-
-    },
     "devDependencies": {
         "bower": "1.8.14",
         "grunt": "1.6.1",
         "grunt-cli": "1.5.0",
+        "grunt-contrib-connect": "^5.0.1",
         "grunt-wiredep": "^3.0.1",
         "load-grunt-tasks": "^5.1.0"
     }
