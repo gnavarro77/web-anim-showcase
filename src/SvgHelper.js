@@ -10,7 +10,8 @@ static createTag(tagName){
 }
 
 static setAttribute(elt, name, value){
-    elt.setAttributeNS(null,name,value);  
+    console.log("setAttributes " + elt + " " + name + " " + value);
+    elt.setAttributeNS(SvgHelper.svgNS,name,value);  
 }
 
 static getAttribute(elt,name){
@@ -57,7 +58,7 @@ static text2svg(text, fontSize){
     const letters = text.split("");
     let x = 0;
     let y = fontSize;
-    
+
     let elements = new Array();
     let tag = null;
 
@@ -89,6 +90,14 @@ static letter2svg(letter, x, y, fontSize){
     return tag;
 }
 
+static async getFileContent(src){
+    let text = null;
+    await fetch(src)
+        .then((res) => {
+        text = res.text()})
+        .catch((e) => console.error(e));
+    return text;
+}
 
 
 

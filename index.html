@@ -8,7 +8,10 @@
 
     <script src="src/SvgHelper.js"></script>
     <script src="src/LinearSequence.js"></script>
-    <script src="src/GoThroughAnim.js"></script>
+
+    <script src="src/painting/AbstractPainting.js"></script>
+    <script src="src/painting/IslandsPainting.js"></script>
+
 
     <!-- bower:js -->
     <script src="components/Snap.svg/dist/snap.svg-min.js"></script>
@@ -18,108 +21,26 @@
 
 <body>
 
-    <svg id="svg-container" 
-         xmlns="http://www.w3.org/2000/svg" 
-         height="100%" 
-         width="100%" 
-         viewBox="0 0 800 800" >
+    <!--
+<svg id="svg-container" 
+xmlns="http://www.w3.org/2000/svg" 
+width="2084.568" height="1158.07" viewBox="0 0 2084 1158">
+<use href="svg/fantasy-world-2023256.svg"></use>
+</svg> -->
 
-    </svg>
-
-
-
+    <!--
+<svg id="svg-container" height="100%" width="100%" viewBox="0 0 800 800"><use href="svg/fantasy-world-2023256.svg"></use></svg>
+-->
 
     <script>
 
         document.addEventListener('DOMContentLoaded', function() {
-            const svgCode = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50"/></svg>';
-            const svgContainer = document.getElementById('svg-container');
-            //svgContainer.innerHTML = svgCode;
-
-            var client = new XMLHttpRequest();
-            client.open('GET', 'svg/chalet-5218666.svg');
-            client.onreadystatechange = function() {
-                svgContainer.innerHTML = (client.responseText);
-            }
-            client.send();
-
-
+            const painting = new IslandsPainting(document.body);
+            //document.body.appendChild(painting.getContainer());
         });
 
 
-        const root = document.getElementById("svg");
-        const container = SvgHelper.createTag("g");
-        //root.appendChild(container);
 
-        let fontSize = 24;
-        let text = "Invente des produits innovants";
-        let letters = SvgHelper.text2svg(text, fontSize);
-        //SvgHelper.appendChildren(container, letters);
-
-        let seq1 = null;
-        async function fadeInLetters(){
-            seq1 = new LinearSequence(letters);
-            await seq1.run(
-                [{ opacity: 0 }, { opacity: 1 }],
-                {
-                    duration: 20,
-                    easing: "ease-in-out",
-                    fill: 'forwards'
-                }
-            )
-
-        }
-
-        async function hightlightLetters(){
-            seq = new LinearSequence(letters);
-            await seq.run(
-                [{ fill: "#4A919E"}],
-                {
-                    duration: 20,
-                    fill: 'forwards',
-                    easing: "linear"
-                }
-            )
-        }
-
-        async function popUpLetters() {
-            seq = new LinearSequence(letters);
-            const scaleExpr = "scale(1, 2)";
-            await seq.run(
-                [{ transform:  scaleExpr}],
-                {
-                    duration: 200,
-                    easing: "linear"
-                }
-            )
-        }
-
-        async function fallDownLetters(val){
-            seq = new LinearSequence(letters);
-            const expr = `translate(0px,${val}px)`;
-            await seq.run(
-                [{ transform:  expr}],
-                {
-                    duration: 100,
-                    fill: 'forwards',
-                    easing: "ease-in-out"
-                }
-            )
-        }
-        /*
-        async function allAnim(){
-            await fadeInLetters();
-            //await seq1.reverse();
-
-            //await popUpLetters();
-            //await fallDownLetters(fontSize);
-            //await SvgHelper.scale(container, 1, 4);
-            await hightlightLetters();
-
-        }
-
-        allAnim();
-*/
 
 
     </script>
