@@ -16,40 +16,18 @@ class IslandsPainting extends AbstractPainting {
 
 
     _setupIleCascade(){
-        let ile = document.getElementById('ilecascade');
 
-        let tx = 0;
-        let ty = -1;
-        const expr = `translate(0,0)`;
-
-        let matrix = ile.transform;
-
-        const animSVG = SVG.createTag('animateMotion');
-        SVG.setAttributes(animSVG,{
-            path:"M0,0 q60,100 100,0 q60,-20 100,0",
-            begin:"0s",
-            dur:"10s",
-            repeatCount:"indefinite"
-        });
-        
-        ile.appendChild(animSVG);
-        
-/*
-        <animateMotion
-        path="M0,0 q60,100 100,0 q60,-20 100,0"
-        begin="0s"
-        dur="10s"
-        repeatCount="indefinite" />
+        setTimeout(function (){
+            let ile = document.getElementById('ilecascade');
+            ile.dispatchEvent(new Event('dblclick'));
+            
+            
+            let ileAnim = document.getElementById('ileCascadeAnim');
+            ileAnim.begin = null;
+            
+        }, 1000);
 
 
-            ile.animate([{ transform:  expr}], {
-            duration: 1000,
-            //fill: 'forwards',
-            easing: "ease-in-out"
-        });
-        
-        
-        */
     }
 
 
