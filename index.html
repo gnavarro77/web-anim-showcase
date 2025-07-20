@@ -34,9 +34,14 @@ width="2084.568" height="1158.07" viewBox="0 0 2084 1158">
 
     <script>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const painting = new IslandsPainting(document.body);
-            //document.body.appendChild(painting.getContainer());
+        document.addEventListener('DOMContentLoaded', async function() {
+            const painting = new IslandsPainting();
+            let promise = painting.init();
+            promise.then((res)=>{
+                document.body.appendChild(res.node);    
+                painting.stage();
+            });
+
         });
 
 

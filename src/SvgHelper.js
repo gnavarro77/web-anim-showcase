@@ -18,6 +18,10 @@ static getAttribute(elt,name){
     return elt.getAttributeNS(SvgHelper.svgNS, name);  
 }
 
+static removeAttribute(elt, name){
+    elt.removeAttributeNS(SvgHelper.svgNS, name);
+}
+
 static setAttributes(elt, attrs){
     for (const [key, value] of Object.entries(attrs)) {
         SvgHelper.setAttribute(elt, key, value);
@@ -97,6 +101,13 @@ static async getFileContent(src){
         text = res.text()})
         .catch((e) => console.error(e));
     return text;
+}
+
+/**
+*/
+static parseSvg(content){
+    const parser = new DOMParser();
+    return parser.parseFromString(content, "image/svg+xml");
 }
 
 

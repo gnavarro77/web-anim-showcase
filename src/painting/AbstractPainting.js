@@ -3,27 +3,30 @@ const SVG = SvgHelper;
 
 class AbstractPainting {
 
-    _container = null;
-
-constructor(container){
-    this._container = container;
-}
-
-
-async _init(href) {
-    const text = await SVG.getFileContent(href);
-    this._container.innerHTML  = text;
     
-}
+    _container = null;
+    
 
+    constructor(){
 
+    }
 
-getContainer(){
-    return this._container;
-}
+    async _load(url){
+        let self = this;
+        let promise =  new Promise(async function(resolve, reject) {
+             Snap.load(url,(svg)=>{
+                 self._container = new Snap(svg.node);
+                resolve(svg);
+             });
+        });    
+        return promise;
+    }
 
+    getContainer(){
+        return this._container;
+    }
 
-
-
-
+    getRoot(){
+        return Snap.select('#root');
+    }
 }
