@@ -85,7 +85,7 @@ static letter2svg(letter, x, y, fontSize){
         "font-size":fontSize,
         "class":"letter",
         "fill":"#212E53",
-        "opacity":0,
+        "opacity":1,
         "ignore":(letter === '')?true:false
     };
     SvgHelper.setAttributes(tag, attrs);
