@@ -23,14 +23,14 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="2.6134359"
-     inkscape:cx="94.511597"
-     inkscape:cy="122.63549"
+     inkscape:cx="80.545308"
+     inkscape:cy="121.87022"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g1"
      showgrid="false" />
   <linearGradient
      id="x"
@@ -386,18 +386,16 @@
     <g
        inkscape:groupmode="layer"
        inkscape:label="screen"
-       id="screen"
-       transform="translate(98.343994,94.3479)"
-       style="mix-blend-mode:normal"
-       id="g1">
+       id="g1"
+       transform="matrix(0.90645691,0,0,0.90317813,106.19492,111.54113)"
+       style="mix-blend-mode:normal">
       <rect
          id="screenBox"
-         style="fill:none;stroke:#000000;stroke-width:1"
+         style="fill:none;stroke:none;stroke-width:1"
          width="163.62106"
          height="134.36816"
          x="10.298974"
          y="43.207706" />
-        
     </g>
   </g>
 </svg>

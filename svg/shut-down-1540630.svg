@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="80"
+   height="80"
+   version="1.1"
+   viewBox="0 0 80.000001 80.000001"
+   id="svg3"
+   sodipodi:docname="shut-down-1540630.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview3"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.01875"
+     inkscape:cx="400"
+     inkscape:cy="400"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3" />
+  <defs
+     id="defs2">
+    <linearGradient
+       id="a"
+       x1="391.39001"
+       x2="108.73"
+       y1="415.01999"
+       y2="697.67999"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         id="stop1" />
+      <stop
+         stop-opacity="0"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+  </defs>
+  <g
+     transform="matrix(0.1,0,0,0.1,0,-25.235999)"
+     fill-rule="evenodd"
+     shape-rendering="auto"
+     id="g3">
+    <circle
+       cx="400"
+       cy="652.35999"
+       r="400"
+       color="#000000"
+       color-rendering="auto"
+       fill="#1c8adb"
+       image-rendering="auto"
+       solid-color="#000000"
+       style="isolation:auto;mix-blend-mode:normal"
+       id="circle2" />
+    <path
+       transform="translate(0,252.36)"
+       d="M 257.86,210 2.46,440.31 A 400,400 0 0 0 359.37,797.9 L 590,542.15 449.07,401.21 590,257.86 542.143,210.003 398.793,350.933 257.853,210.003 Z"
+       color="#000000"
+       color-rendering="auto"
+       fill="url(#a)"
+       image-rendering="auto"
+       opacity="0.42"
+       solid-color="#000000"
+       style="isolation:auto;mix-blend-mode:normal;fill:url(#a)"
+       id="path2" />
+    <path
+       d="m 257.86,462.36 -47.857,47.857 142.14,142.14 -142.14,142.14 47.857,47.857 L 400,700.214 542.14,842.354 589.997,794.497 447.857,652.357 589.997,510.217 542.14,462.36 400,604.5 Z"
+       color="#000000"
+       color-rendering="auto"
+       fill="#ffffff"
+       image-rendering="auto"
+       solid-color="#000000"
+       style="isolation:auto;mix-blend-mode:normal"
+       id="path3" />
+  </g>
+</svg>

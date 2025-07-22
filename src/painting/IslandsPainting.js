@@ -1,5 +1,18 @@
 class IslandsPainting extends AbstractPainting {
-
+    
+    _memo = null;
+    
+    _citations = {
+        'suntzu' : ['C\'est lorsqu\'on est',
+                    'environné de tous',
+                    'les dangers',
+                    'qu\'il n\'en faut',
+                    'redouter aucun',
+                    'Sun Tzu']
+    }
+    
+    
+    
     constructor() {
         super();
     }
@@ -11,8 +24,6 @@ class IslandsPainting extends AbstractPainting {
         promise.then((snap)=>{
             self._container = snap;
         });
-        
-        
         return promise;
     }
     
@@ -21,146 +32,138 @@ class IslandsPainting extends AbstractPainting {
         let self = this;
         let url = 'svg/warrior-5658627.svg';
         
-        self._load(url).then((frag) => {
-            let ileCascade = Snap.select('#ilecascade');
-            let warrior = Snap(frag.node);
-
-            Snap(warrior.node).attr({
-                x:'212px',
-                y:'20px',
-                height:'80px',
-                opacity:0
-            });
-
-            ileCascade.append(warrior);
-            
-            
-            let ile = Snap.select('#ilecascade');
-            ile.node.dispatchEvent(new Event('dblclick'));
-
-            ile.node.onclick = (()=>{
-                console.log('click click');
-                warrior.animate({opacity: 1}, 500);
-                
-            });
-            
-            this._appendMemo();
-        });   
-    }
-    
-    _appendMemo(){
-        let self = this;
-        let url = 'svg/memo-383982.svg';
-        self._load(url).then((frag) => {
-            let memo = Snap(frag.node);
-            self.getRoot().append(memo);    
-            let bbox = self._container.getBBox();
-            let eltBbox = memo.getBBox();
-            memo.attr({
-                x: (bbox.r2/2) - eltBbox.r2 +'px',
-                y: (bbox.r1/2) - eltBbox.r1 + 'px',
-                opacity:0
-            });
-            memo.animate({opacity:1},500,mina.easeinout(), ()=>{
-                console.log('memo appended!');
-                let screen = memo.select('#screen');
-                
-                
-                let citations = {
-                    'suntzu' : ['Celui qui excelle à',
-                                'résoudre les difficultés',
-                                'le fait avant qu\'elles ne surviennent.']
-                }
-                
-                
-                
-                let t1 = memo.text(0, 0, citations['suntzu'][0]);
-                
-                
-                let bbox = memo.select('#screenBox').getBBox();
-                t1.attr('textLength', bbox.width);
-                const textPath = `M${bbox.x}, ${bbox.y} h ${bbox.width}`;
-                
-                t1.attr({
-                    textpath: textPath,
-                    class:'memo-text'
-                });
-                
-                
-                screen.append(t1);
+        self._load(url).then(async (frag) => {
+            self._loadMemo();
+            let island = await self._setupIsland('ilecascade','svg/warrior-5658627.svg',
+                                {
+                                    x:'212px',
+                                    y:'20px',
+                                    height:'80px',
+                                    opacity:0
+                                });
+            let fn = island.node.onclick; 
+            island.node.onclick = (()=>{
+                fn();
+                self._writeMemo('suntzu');
             });
         });
     }
     
-    
-    _writeSentence(text){
-        let screen = memo.select('#screen');
-        
-    }
-    
-    _writeLine() {
-        
-    }
-    
-    
-    
-    /*
-    <text
-         xml:space="preserve"
-         style="font-size:64.0004px;line-height:1.25;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua';stroke-width:1.00001"
-         x="21.808857"
-         y="99.486526"
-         id="text1"><tspan
-           sodipodi:role="line"
-           id="tspan1"
-           style="stroke-width:1.00001"
-           x="21.808857"
-           y="99.486526">Test</tspan></text>*/
-    
-/*
-    async _init(href) {
-        await super._init(href);
-        this._setupIleCascade();
-    }
-
-
-
-    async _setupIleCascade(){
-
-        let ile = null;
-        let self = this;
-        setTimeout(async  function (){
-            ile = document.getElementById('ilecascade');
-            ile.dispatchEvent(new Event('dblclick'));
-
-            ile.onclick = (()=>{
-                console.log('click click')        ;
-            });
-
-            
-            
-
-            let chicken = await self._loadChicken();
-            var snapChicken = Snap(chicken);
-
-            self._snapContainer.append(chicken);
-            //snapChicken.transform('scale(0.5)');
-            
-            let y = self._getContainerHeight() - snapChicken.getBBox().height;
-            
-            snapChicken.transform('translate(10,'+y+')');
-            
-        }, 1000);
-
-        
-    }
-
-    async _loadChicken() {
-        let markup =  await SVG.getFileContent('svg/chicken-2521141.svg');
-        let elt = SVG.parseSvg(markup);
-        let chicken = elt.getElementById('chicken');
-        return chicken;
-    }
-
+/**
+*
 */
+    async _setupIsland(id, persoUrl, pos){
+        let self = this;
+        let island = null;
+        await self._load(persoUrl).then((frag) => {
+            island = Snap.select('#' + id);
+            // set island on motion
+            island.node.dispatchEvent(new Event('dblclick'));
+            
+            let perso = Snap(frag.node);
+            Snap(perso.node).attr({
+                x:pos.x,
+                y:pos.y,
+                height:pos.height,
+                opacity:0
+            });
+            island.append(perso);
+            island.node.onclick = (()=>{
+                perso.animate({ opacity: 1}, 500);
+            });
+        });
+        return island;
+    }
+
+    
+    _loadMemo(){
+        let self = this;
+        self._load('svg/memo-383982.svg').then(async (frag) => {
+            self._memo = Snap(frag);
+            self.getRoot().append(self._memo); 
+            let bbox = self._container.getBBox();
+            let eltBbox = self._memo.getBBox();
+            self._memo.attr({
+                x: (bbox.r2/2) - eltBbox.r2 +'px',
+                y: (bbox.r1/2) - eltBbox.r1 + 'px',
+                opacity:1
+            });
+            // add close button
+            self._load('svg/shut-down-1540630.svg').then(async (frag) => {
+                let btn = Snap(frag);
+                self._memo.append(btn);
+                btn.attr({
+                    height:'16px',
+                    x:'125px',
+                    y:'20px'
+                });
+                btn.node.onclick = (()=>{
+                    console.log('click close button');
+                });
+                btn.node.onmouseover = (()=> {
+                    console.log('close button mouse in');
+                });
+                /*
+                btn.node.onmouseout = (()=> {
+                    console.log('close button mouse out');
+                });*/
+            })
+        });
+    }
+
+    async _writeMemo(key){
+        let self = this;
+        this._memo.animate({opacity:1},500,mina.easeinout(), ()=>{
+            self._writeCitation(self._citations[key]);
+        });
+    }
+    
+    
+    async _writeCitation(citation){
+        let screen = this._memo.select('#screen');
+        let bbox = this._memo.select('#screenBox').getBBox();
+        let pos = {
+            x:bbox.x,
+            y:bbox.y,
+            width:bbox.width
+        }
+        this._writeLinesSeq(citation, 0, pos);
+    }
+    
+    async _writeLinesSeq(lines, idx, pos){
+        let self = this;
+        let line = await this._writeLine(lines[idx], pos);
+        if (idx < lines.length -1){
+            let bbox = line.node.getBBox();
+            pos.y += bbox.height;
+            if (idx == lines.length-2){
+                pos.y += bbox.height;
+                pos.width = pos.width / 2;
+            }
+            await this._writeLinesSeq(lines, ++idx, pos);
+        }    
+    }
+    
+    async _writeLine(content, pos){
+        let self = this;
+        let promise =  new Promise(async function(resolve, reject) {
+            let text = self._memo.text(0, 0, content);
+            const textPath = `M${pos.x}, ${pos.y} h ${pos.width}`;
+            text.attr({
+                textLength:0,
+                opacity:0,
+                textpath: textPath,
+                class:'memo-text'
+            });
+            await text.animate({textLength:pos.width, opacity:1}, 
+                         500, 
+                         mina.easeinout,
+                         ()=>{resolve(text);
+            });    
+        });
+        return promise;
+    }
+    
+
+    
 }
