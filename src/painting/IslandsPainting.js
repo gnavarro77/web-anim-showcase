@@ -128,31 +128,18 @@ class IslandsPainting extends AbstractPainting {
     }
 
     
-    _loadMemo(){
-        let self = this;
-        self._load('svg/memo-383982.svg').then(async (frag) => {
-            self._memo = Snap(frag);
-            self.getRoot().append(self._memo); 
-            let bbox = self._container.getBBox();
-            let eltBbox = self._memo.getBBox();
-            self._memo.attr({
-                x: (bbox.r2/2) - eltBbox.r2 +'px',
-                y: (bbox.r1/2) - eltBbox.r1 + 'px',
-                opacity:0
-            });
-            // add close button
-            self._load('svg/shut-down-1540630.svg').then(async (frag) => {
-                let btn = Snap(frag);
-                self._memo.append(btn);
-                btn.attr({
-                    height:'16px',
-                    x:'125px',
-                    y:'20px'
-                });
-                btn.node.onclick = (()=>{
-                    self._hideMemo();
-                });
-            })
+    async _loadMemo(){
+        let memo = await new Memo().initialize();
+        this._memo = memo.getNode();
+        this.getRoot().append(this._memo);
+        
+        // positoning memo
+        let bbox = this._container.getBBox();
+        let eltBbox = this._memo.getBBox();
+        this._memo.attr({
+            x: (bbox.r2/2) - eltBbox.r2 +'px',
+            y: (bbox.r1/2) - eltBbox.r1 + 'px',
+            opacity:1
         });
     }
     
