@@ -8,8 +8,72 @@ class IslandsPainting extends AbstractPainting {
                     'les dangers',
                     'qu\'il n\'en faut',
                     'redouter aucun',
-                    'Sun Tzu']
+                    'Sun Tzu'],
+        'explorer': ['Je n’ai pas peur de l’obscurité.',
+                    'La vraie mort est préférable',
+                    ' à une vie sans vivre.',
+                    'Vasco de Gama'],
+        'farmer':['Pour que les arbres et les plantes',
+                  's\'épanouissent,',
+                  'pour que les animaux', 
+                  'qui s\'en nourrissent',
+                  'prospèrent,',
+                  'pour que les hommes vivent,',
+                  'il faut que la terre soit',
+                  'honorée.',
+                  'Pierre Rabhi'],
+        'elephant':['Il n’y a aucune créature',
+                    'parmi toutes les bêtes du monde', 
+                    'qui ait une démonstration',
+                    'aussi grande et aussi ample',
+                    ' de la puissance et de la sagesse',
+                    'de Dieu Tout-Puissant',
+                    ' que l’éléphant.',
+                  'Edward Topsell']
     }
+
+    _islands = {
+        'ilecascade' : {
+            perso :'svg/warrior-5658627.svg',
+            pos : {
+                x:'212px',
+                y:'20px',
+                height:'80px',
+                opacity:0
+            },
+            citationKey : 'suntzu'
+        },
+        'ilemontages' : {
+            perso : 'svg/to-explore-4824408.svg',
+            pos : {
+                x:'120px',
+                y:'20px',
+                height:'50px',
+                opacity:0
+            },
+            citationKey : 'explorer'
+        },
+        'ilecollines' : {
+            perso : 'svg/man-4423726.svg',
+            pos : {
+                x:'20px',
+                y:'30px',
+                height:'40px',
+                opacity:0
+            },
+            citationKey : 'farmer'
+        },
+        'ileville' : {
+            perso : 'svg/elephant-4209931.svg',
+            pos : {
+                x:'-20px',
+                y:'105px',
+                height:'30px',
+                opacity:0
+            },
+            citationKey : 'elephant'
+        }
+    };
     
     
     
@@ -30,23 +94,16 @@ class IslandsPainting extends AbstractPainting {
     
     async stage(){
         let self = this;
-        let url = 'svg/warrior-5658627.svg';
-        
-        self._load(url).then(async (frag) => {
-            self._loadMemo();
-            let island = await self._setupIsland('ilecascade','svg/warrior-5658627.svg',
-                                {
-                                    x:'212px',
-                                    y:'20px',
-                                    height:'80px',
-                                    opacity:0
-                                });
-            let fn = island.node.onclick; 
+        self._loadMemo();
+        for (const [key, value] of Object.entries(self._islands)) {
+            console.log(`${key}`);
+            let island = await self._setupIsland(key,value.perso,value.pos);
+            let fn = island.node.onclick;
             island.node.onclick = (()=>{
                 fn();
-                self._writeMemo('suntzu');
+                self._writeMemo(value.citationKey);
             });
-        });
+        }
     }
     
 /**
@@ -61,15 +118,10 @@ class IslandsPainting extends AbstractPainting {
             island.node.dispatchEvent(new Event('dblclick'));
             
             let perso = Snap(frag.node);
-            Snap(perso.node).attr({
-                x:pos.x,
-                y:pos.y,
-                height:pos.height,
-                opacity:0
-            });
+            perso.attr(pos);
             island.append(perso);
             island.node.onclick = (()=>{
-                perso.animate({ opacity: 1}, 500);
+                perso.animate({ opacity: 1}, 1000);
             });
         });
         return island;
@@ -86,7 +138,7 @@ class IslandsPainting extends AbstractPainting {
             self._memo.attr({
                 x: (bbox.r2/2) - eltBbox.r2 +'px',
                 y: (bbox.r1/2) - eltBbox.r1 + 'px',
-                opacity:1
+                opacity:0
             });
             // add close button
             self._load('svg/shut-down-1540630.svg').then(async (frag) => {
@@ -98,24 +150,41 @@ class IslandsPainting extends AbstractPainting {
                     y:'20px'
                 });
                 btn.node.onclick = (()=>{
-                    console.log('click close button');
+                    self._hideMemo();
                 });
-                btn.node.onmouseover = (()=> {
-                    console.log('close button mouse in');
-                });
-                /*
-                btn.node.onmouseout = (()=> {
-                    console.log('close button mouse out');
-                });*/
             })
         });
     }
+    
+    async _hideMemo(){
+        let self = this;
+        this._memo.animate({opacity:0},500, mina.easeinout(), ()=>{
+            self._clearMemo();
+            this._memo.data('island', null);
+        });
+    }
+
 
     async _writeMemo(key){
         let self = this;
-        this._memo.animate({opacity:1},500,mina.easeinout(), ()=>{
-            self._writeCitation(self._citations[key]);
-        });
+        let islandKey = this._memo.data('island');
+        if (islandKey != key) {
+            this._memo.data('island', key);
+            if (this._isMemoVisible()){
+                self._clearMemo();
+            }
+            this._memo.animate({opacity:1},500,mina.easeinout(), ()=>{
+                self._writeCitation(self._citations[key]);
+            });
+        }
+    }
+    
+    _clearMemo(){
+        this._memo.selectAll('text').forEach((line)=>{line.remove();});
+    }
+
+    _isMemoVisible(){
+        return this._memo.attr('opacity') == 1;
     }
     
     
@@ -156,7 +225,7 @@ class IslandsPainting extends AbstractPainting {
                 class:'memo-text'
             });
             await text.animate({textLength:pos.width, opacity:1}, 
-                         500, 
+                         350, 
                          mina.easeinout,
                          ()=>{resolve(text);
             });    

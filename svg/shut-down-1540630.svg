@@ -4,7 +4,7 @@
    height="80"
    version="1.1"
    viewBox="0 0 80.000001 80.000001"
-   id="svg3"
+   id="btnCloseSvg"
    sodipodi:docname="shut-down-1540630.svg"
    inkscape:version="1.4 (86a8ad7, 2024-10-11)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
@@ -51,7 +51,8 @@
      transform="matrix(0.1,0,0,0.1,0,-25.235999)"
      fill-rule="evenodd"
      shape-rendering="auto"
-     id="g3">
+     id="btnClose">
+    
     <circle
        cx="400"
        cy="652.35999"
@@ -62,7 +63,18 @@
        image-rendering="auto"
        solid-color="#000000"
        style="isolation:auto;mix-blend-mode:normal"
-       id="circle2" />
+       id="btnCloseBg">
+        <animate attributeName="opacity"
+             values="0.6" dur="0s"
+             begin="btnCloseBg.mouseover"
+             end="btnCloseBg.mouseout"
+             fill="freeze" />
+        <animate attributeName="opacity"
+             values="1" dur="0s"
+             begin="btnCloseBg.mouseout"
+             end="btnCloseBg.mouseover"
+             fill="freeze" />
+      </circle>
     <path
        transform="translate(0,252.36)"
        d="M 257.86,210 2.46,440.31 A 400,400 0 0 0 359.37,797.9 L 590,542.15 449.07,401.21 590,257.86 542.143,210.003 398.793,350.933 257.853,210.003 Z"
