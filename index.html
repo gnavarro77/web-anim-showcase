@@ -22,32 +22,22 @@
 
 <body>
 
-    <!--
-<svg id="svg-container" 
-xmlns="http://www.w3.org/2000/svg" 
-width="2084.568" height="1158.07" viewBox="0 0 2084 1158">
-<use href="svg/fantasy-world-2023256.svg"></use>
-</svg> -->
 
-    <!--
-<svg id="svg-container" height="100%" width="100%" viewBox="0 0 800 800"><use href="svg/fantasy-world-2023256.svg"></use></svg>
--->
 
     <script>
-
-        document.addEventListener('DOMContentLoaded', async function() {
+        
+        function setupIslands(){
             const painting = new IslandsPainting();
             let promise = painting.init();
             promise.then((res)=>{
                 document.body.appendChild(res.node);    
                 painting.stage();
             });
+        }
 
+        document.addEventListener('DOMContentLoaded', async function() {
+            setupIslands()
         });
-
-
-
-
 
     </script>
 

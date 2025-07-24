@@ -1,5 +1,6 @@
 class IslandsPainting extends AbstractPainting {
     
+    _memoObj = null;
     _memo = null;
     
     _citations = {
@@ -129,8 +130,8 @@ class IslandsPainting extends AbstractPainting {
 
     
     async _loadMemo(){
-        let memo = await new Memo().initialize();
-        this._memo = memo.getNode();
+        this._memoObj = await new Memo().initialize();
+        this._memo = this._memoObj.getNode();
         this.getRoot().append(this._memo);
         
         // positoning memo
@@ -139,86 +140,16 @@ class IslandsPainting extends AbstractPainting {
         this._memo.attr({
             x: (bbox.r2/2) - eltBbox.r2 +'px',
             y: (bbox.r1/2) - eltBbox.r1 + 'px',
-            opacity:1
-        });
-    }
-    
-    async _hideMemo(){
-        let self = this;
-        this._memo.animate({opacity:0},500, mina.easeinout(), ()=>{
-            self._clearMemo();
-            this._memo.data('island', null);
+            opacity:0
         });
     }
 
 
     async _writeMemo(key){
-        let self = this;
-        let islandKey = this._memo.data('island');
-        if (islandKey != key) {
-            this._memo.data('island', key);
-            if (this._isMemoVisible()){
-                self._clearMemo();
-            }
-            this._memo.animate({opacity:1},500,mina.easeinout(), ()=>{
-                self._writeCitation(self._citations[key]);
-            });
-        }
+        this._memoObj.writeLines(this._citations[key]);
     }
     
-    _clearMemo(){
-        this._memo.selectAll('text').forEach((line)=>{line.remove();});
-    }
-
-    _isMemoVisible(){
-        return this._memo.attr('opacity') == 1;
-    }
-    
-    
-    async _writeCitation(citation){
-        let screen = this._memo.select('#screen');
-        let bbox = this._memo.select('#screenBox').getBBox();
-        let pos = {
-            x:bbox.x,
-            y:bbox.y,
-            width:bbox.width
-        }
-        this._writeLinesSeq(citation, 0, pos);
-    }
-    
-    async _writeLinesSeq(lines, idx, pos){
-        let self = this;
-        let line = await this._writeLine(lines[idx], pos);
-        if (idx < lines.length -1){
-            let bbox = line.node.getBBox();
-            pos.y += bbox.height;
-            if (idx == lines.length-2){
-                pos.y += bbox.height;
-                pos.width = pos.width / 2;
-            }
-            await this._writeLinesSeq(lines, ++idx, pos);
-        }    
-    }
-    
-    async _writeLine(content, pos){
-        let self = this;
-        let promise =  new Promise(async function(resolve, reject) {
-            let text = self._memo.text(0, 0, content);
-            const textPath = `M${pos.x}, ${pos.y} h ${pos.width}`;
-            text.attr({
-                textLength:0,
-                opacity:0,
-                textpath: textPath,
-                class:'memo-text'
-            });
-            await text.animate({textLength:pos.width, opacity:1}, 
-                         350, 
-                         mina.easeinout,
-                         ()=>{resolve(text);
-            });    
-        });
-        return promise;
-    }
+  
     
 
     
