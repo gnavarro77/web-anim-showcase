@@ -12,6 +12,8 @@
     <script src="src/painting/Memo.js"></script>
     <script src="src/painting/AbstractPainting.js"></script>
     <script src="src/painting/IslandsPainting.js"></script>
+    
+    <script src="src/bar/BarScene.js"></script>
 
 
     <!-- bower:js -->
@@ -34,9 +36,20 @@
                 painting.stage();
             });
         }
-
+        
+        
+        function setupBarScene(){
+            const scene = new BarScene();
+            let promise = scene.initialize();
+             promise.then((node)=>{
+                document.body.appendChild(node);    
+                //scene.stage();
+            });
+        }
+        
         document.addEventListener('DOMContentLoaded', async function() {
-            setupIslands()
+            //setupIslands()
+            setupBarScene();
         });
 
     </script>
