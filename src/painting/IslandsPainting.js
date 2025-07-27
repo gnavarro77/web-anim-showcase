@@ -1,5 +1,6 @@
-class IslandsPainting extends AbstractPainting {
+class IslandsPainting  {
     
+    _container = null;
     _memoObj = null;
     _memo = null;
     
@@ -79,20 +80,22 @@ class IslandsPainting extends AbstractPainting {
     
     
     constructor() {
-        super();
+        //super();
     }
 
     
-    async init(){
+    async initialize(){
         let self = this;
-        var promise = this._load('svg/fantasy-world-2023256.svg')
-        promise.then((snap)=>{
-            self._container = snap;
-        });
+        let url = 'svg/fantasy-world-2023256.svg';
+        let promise =  new Promise(async function(resolve, reject) {
+             Snap.load(url,async (frag)=>{
+                 self._container = new Snap(frag.node.firstElementChild);
+                resolve(self._container.node);
+             });
+        });    
         return promise;
     }
-    
-    
+
     async stage(){
         let self = this;
         self._loadMemo();
@@ -112,19 +115,24 @@ class IslandsPainting extends AbstractPainting {
 */
     async _setupIsland(id, persoUrl, pos){
         let self = this;
-        let island = null;
-        await self._load(persoUrl).then((frag) => {
-            island = Snap.select('#' + id);
-            // set island on motion
-            island.node.dispatchEvent(new Event('dblclick'));
-            
-            let perso = Snap(frag.node);
-            perso.attr(pos);
-            island.append(perso);
-            island.node.onclick = (()=>{
-                perso.animate({ opacity: 1}, 1000);
-            });
-        });
+        let island = null;        
+        let promise = new Promise(async function(resolve, reject) {
+             Snap.load(persoUrl,(frag)=>{
+                 island = Snap.select('#' + id);
+                // set island on motion
+                island.node.dispatchEvent(new Event('dblclick'));
+
+                let perso = new Snap(frag.node.firstElementChild);
+                perso.attr(pos);
+                island.append(perso);
+                island.node.onclick = (()=>{
+                    perso.animate({ opacity: 1}, 1000);
+                });
+                 resolve();
+             });
+        });  
+        await promise;
+        
         return island;
     }
 
@@ -132,7 +140,7 @@ class IslandsPainting extends AbstractPainting {
     async _loadMemo(){
         this._memoObj = await new Memo().initialize();
         this._memo = this._memoObj.getNode();
-        this.getRoot().append(this._memo);
+        Snap.select('#root').append(this._memo);
         
         // positoning memo
         let bbox = this._container.getBBox();
