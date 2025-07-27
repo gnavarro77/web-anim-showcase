@@ -45,6 +45,15 @@ static appendChildren(container, children){
     });
 }
 
+/**
+*
+*/
+static matrixExpr(matrix){
+    let expr = `matrix(${matrix.a},${matrix.b},${matrix.c},${matrix.d},${matrix.e},${matrix.f})`;  
+    return expr;
+}
+
+
 
 static computeCenterCoords(elt) {
     let bounds = elt.getBBox();
