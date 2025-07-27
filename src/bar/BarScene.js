@@ -8,6 +8,7 @@ class BarScene {
     _cocktails = {};
     
     _showFicheAnim = null;
+    _clickedCocktailId = null;
     _selectedCocktailId = null;
     _selectedCocktail = null;
     
@@ -105,15 +106,19 @@ class BarScene {
     */
     async _onCocktailClick(cocktail){
         let self = this;
-        self._selectedCocktailId = cocktail.id;
+        self._clickedCocktailId = cocktail.id;
+        console.log('clicked ' + cocktail.id);
         this._isFicheVisible().then(async (visible)=>{
+            console.log('enter 0 ' + self._clickedCocktailId);
             if(!visible) {
                 this._showFiche().then(()=>{
-                    if (self._selectedCocktailId == cocktail.id) {
+                    console.log('enter 1 ' + self._clickedCocktailId);
+                    if (self._clickedCocktailId == cocktail.id) {
                         this._selectCocktail(cocktail);   
                     }
                 }); 
             } else {
+                console.log('enter 2 ' + self._clickedCocktailId);
                 this._selectCocktail(cocktail);    
             }
         });
