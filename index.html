@@ -3,27 +3,27 @@
     <head>
         <meta charset="utf-8">
         <title>Web Animation Showcase</title>
+        <!-- inject:css -->
 
-        <link href="style/webanim.css" rel="stylesheet"></link>
-        <link href="style/menu.css" rel="stylesheet"></link>
+        <link rel="stylesheet" href="/style/menu.css">
 
-    <script src="src/SvgHelper.js"></script>
-    <script src="src/LinearSequence.js"></script>
+        <link rel="stylesheet" href="/style/webanim.css">
 
-    <script src="src/painting/Memo.js"></script>
-    <script src="src/painting/IslandsPainting.js"></script>
-    
-    <script src="src/scene/BarScene.js"></script>
-
-
-    <!-- bower:js -->
-    <script src="components/Snap.svg/dist/snap.svg-min.js"></script>
-    <!-- endbower -->
-
+        <!-- endinject -->
     </head>
 
 <body>
-    
+    <!-- inject:js -->
+    <script src="/components/Snap.svg/dist/snap.svg-min.js"></script>
+    <script src="/src/scene/Scene.js"></script>
+    <script src="/src/Effects.js"></script>
+    <script src="/src/LinearSequence.js"></script>
+    <script src="/src/SvgHelper.js"></script>
+    <script src="/src/painting/IslandsPainting.js"></script>
+    <script src="/src/painting/Memo.js"></script>
+    <script src="/src/scene/BarScene.js"></script>
+    <script src="/src/scene/PerpendiculaireScene.js"></script>
+    <!-- endinject -->
 
     <script>
         let scenes = {
@@ -32,6 +32,9 @@
             },
             'bar' : {
                 classname : 'BarScene'
+            },
+            'perpendiculaire' : {
+                classname : 'PerpendiculaireScene'
             }
         }
         
@@ -63,7 +66,7 @@
         }
         
         document.addEventListener('DOMContentLoaded', async function() {
-            let elt = document.getElementsByClassName('topnav')[0].firstElementChild.click();
+            let elt = document.getElementsByClassName('topnav')[0].lastElementChild.click();
         });        
     </script>
     
@@ -73,6 +76,7 @@
 <div class="topnav">
   <a href="#bar" onclick="navigate('bar', this)">Bar</a>
   <a href="#islands" onclick="navigate('islands', this)">Iles</a>
+  <a href="#perpendiculaire" onclick="navigate('perpendiculaire', this)">Géométrie</a>
 </div>
 
 <div id="scene">
