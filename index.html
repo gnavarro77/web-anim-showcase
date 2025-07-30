@@ -12,78 +12,86 @@
         <!-- endinject -->
     </head>
 
-<body>
-    <!-- inject:js -->
-    <script src="/components/Snap.svg/dist/snap.svg-min.js"></script>
-    <script src="/src/scene/Scene.js"></script>
-    <script src="/src/Effects.js"></script>
-    <script src="/src/LinearSequence.js"></script>
-    <script src="/src/SvgHelper.js"></script>
-    <script src="/src/painting/IslandsPainting.js"></script>
-    <script src="/src/painting/Memo.js"></script>
-    <script src="/src/scene/BarScene.js"></script>
-    <script src="/src/scene/PerpendiculaireScene.js"></script>
-    <!-- endinject -->
+    <body>
+        <!-- inject:js -->
+        <script src="/components/Snap.svg/dist/snap.svg-min.js"></script>
+        <script src="/src/scene/Scene.js"></script>
+        <script src="/src/Effects.js"></script>
+        <script src="/src/LinearSequence.js"></script>
+        <script src="/src/SvgHelper.js"></script>
+        <script src="/src/painting/IslandsPainting.js"></script>
+        <script src="/src/painting/Memo.js"></script>
+        <script src="/src/scene/BarScene.js"></script>
+        <script src="/src/scene/CharpenteScene.js"></script>
+        <script src="/src/scene/PerpendiculaireScene.js"></script>
+        <!-- endinject -->
 
-    <script>
-        let scenes = {
-            'islands' : {
-                classname : 'IslandsPainting'
-            },
-            'bar' : {
-                classname : 'BarScene'
-            },
-            'perpendiculaire' : {
-                classname : 'PerpendiculaireScene'
-            }
-        }
-        
-        function setupScene(key){
-            console.log('setup scene ' + key);
-            let classname = scenes[key].classname;
-            let sceneInstance = eval("new " + classname + "()");
-            let promise = sceneInstance.initialize();
-            promise.then((node)=>{
-                let sceneElt = document.getElementById('scene'); 
-                sceneElt.innerHTML  = '';
-                sceneElt.appendChild(node);    
-                sceneInstance.stage();
-            });
-        }
-        
-        
-        function navigate(key, target){
-            clearNav();
-            target.classList.add("active");
-            setupScene(key);
-        }
-        
-        function clearNav(){
-            let links = document.getElementsByClassName('topnav')[0].children;
-            for (let link of links) {
-                link.classList.remove("active")
-            };
-        }
-        
-        document.addEventListener('DOMContentLoaded', async function() {
-            let elt = document.getElementsByClassName('topnav')[0].lastElementChild.click();
-        });        
-    </script>
-    
-    
-
-        
-<div class="topnav">
-  <a href="#bar" onclick="navigate('bar', this)">Bar</a>
-  <a href="#islands" onclick="navigate('islands', this)">Iles</a>
-  <a href="#perpendiculaire" onclick="navigate('perpendiculaire', this)">Géométrie</a>
-</div>
-
-<div id="scene">
-    
-</div>
+        <script>
+            let sceneObj = null;
             
-    
+            let scenes = {
+                'islands' : {
+                    classname : 'IslandsPainting'
+                },
+                'bar' : {
+                    classname : 'BarScene'
+                },
+                'perpendiculaire' : {
+                    classname : 'PerpendiculaireScene'
+                },
+                'charpente' : {
+                    classname : 'CharpenteScene'
+                }
+            }
 
-</body>
+            function setupScene(key){
+                console.log('setup scene ' + key);
+                let classname = scenes[key].classname;
+                sceneObj = eval("new " + classname + "()");
+                let promise = sceneObj.initialize();
+                promise.then((node)=>{
+                    let sceneElt = document.getElementById('scene_container'); 
+                    sceneElt.innerHTML  = '';
+                    sceneElt.appendChild(node);    
+                    sceneObj.stage();
+                });
+            }
+
+
+            function navigate(key, target){
+                clearNav();
+                target.classList.add("active");
+                setupScene(key);
+            }
+
+            function clearNav(){
+                let links = document.getElementsByClassName('topnav')[0].children;
+                for (let link of links) {
+                    link.classList.remove("active")
+                };
+            }
+
+            document.addEventListener('DOMContentLoaded', async function() {
+                let elt = document.getElementsByClassName('topnav')[0].lastElementChild.click();
+            });        
+        </script>
+
+
+
+
+        <div class="topnav">
+            <a href="#bar" onclick="navigate('bar', this)">Bar</a>
+            <a href="#islands" onclick="navigate('islands', this)">Iles</a>
+            <a href="#perpendiculaire" onclick="navigate('perpendiculaire', this)">Géométrie</a>
+            <a href="#charpente" onclick="navigate('charpente', this)">Géométrie</a>
+
+        </div>
+
+        <div id="scene_container">
+
+        </div>
+
+
+
+    </body>
 </html>

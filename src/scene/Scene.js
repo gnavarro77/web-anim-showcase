@@ -1,6 +1,5 @@
 class Scene {
     
-    
     _scene = null;
     
     
@@ -23,4 +22,39 @@ class Scene {
         });       
     };
     
+
+
+    transformFromViewportToElement(x, y, sctm=null, elementTransform=null) {
+        // Transforms coordinates from the client (viewport) coordinate
+        // system to coordinates in the SVG element's coordinate system.
+        // Call this, for example, with clientX and clientY from mouse event.
+
+        // create a new DOM point based on coordinates from client viewport
+        const p = new DOMPoint(x, y);
+
+        // get the transform matrix used to convert from the SVG element's
+        // coordinates to the screen/viewport coordinate system
+        let screenTransform;
+        if (sctm === null) {
+            screenTransform = document.getElementById('main').getScreenCTM();
+        } else {
+            screenTransform = sctm;
+        }
+
+        // now invert it, so we can transform from screen/viewport to element
+        const inverseScreenTransform = screenTransform.inverse()
+
+        // transform the point using the inverted matrix
+        const transformedPoint = p.matrixTransform(inverseScreenTransform)
+
+        // adjust the point for the currently applied scale on the element
+        if (elementTransform !== null) {
+            transformedPoint.x *= elementTransform.a; // scale x
+            transformedPoint.y *= elementTransform.d; // scale y
+        }
+
+        return {x: transformedPoint.x, y: transformedPoint.y}
+    }
+
+
 }

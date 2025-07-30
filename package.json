@@ -12,8 +12,11 @@
         "bower": "1.8.14",
         "fancy-log": "^2.0.0",
         "gulp": "^5.0.1",
+        "gulp-concat": "^2.6.1",
         "gulp-inject": "^5.0.5",
-        "gulp-webserver": "^0.5.0",
+        "gulp-minify": "^3.0.0",
+        "gulp-uglify": "^3.0.2",
+        "gulp-webserver": "^0.1.0",
         "main-bower-files": "^2.13.3"
     }
 }

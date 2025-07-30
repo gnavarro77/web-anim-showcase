@@ -5,6 +5,23 @@ class SvgHelper {
 
     static svgNS = "http://www.w3.org/2000/svg";
 
+
+
+static selectParents(elt) {
+    let parents = [];
+    let current = elt;
+    let stop = false;
+    while (current.parentElement != null && !stop){
+        parents.push(current.parentElement);
+        current = current.parentElement;
+        stop = current.parentElement.nodeName == 'svg';
+    }
+    parents.push(current.parentElement);
+    return parents;
+}
+
+
+
 static createTag(tagName){
     return document.createElementNS(SvgHelper.svgNS,tagName);
 }
@@ -66,6 +83,16 @@ static computeCenterCoords(elt) {
     return coords;
 }
 
+/**
+*
+*/
+static createTextNode(label, attrs = {}){
+    let text = SvgHelper.createTag("text");
+    SvgHelper.setAttributes(text, attrs);
+    let tspan = document.createTextNode(label);
+    text.appendChild(tspan);
+    return text;
+}
 
 static text2svg(text, fontSize){
     const letters = text.split("");

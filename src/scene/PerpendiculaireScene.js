@@ -84,7 +84,7 @@ class PerpendiculaireScene extends Scene {
 
     async _clear(methode){
         Effects.fadeOut(methode.instructions);
-        Effects.fadeOut(Object.values(methode.dessin));
+        await Effects.fadeOut(Object.values(methode.dessin));
     }
 
     /**
