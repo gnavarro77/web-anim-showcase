@@ -2,6 +2,7 @@ class CharpenteScene extends Scene {
 
 
     _tooltip = null;
+    _labels = [];
 
 constructor(){
     super();
@@ -46,37 +47,31 @@ async loadTooltip(){
 
 
 tooltipIn(event) {
-    console.log('tooltipIn');
-    const {clientX, clientY} = event;
-    
-    this._scene.append(this._tooltip);
-    const currentTransform = this._tooltip.attr('transform').localMatrix;
-    let ctm = this._scene.node.getScreenCTM();
-    
-    const mouseStart = this.transformFromViewportToElement(clientX, clientY, ctm, currentTransform);
-    const {height} = this._tooltip.getBBox();
-    this._tooltip.attr({
-        x:mouseStart.x,
-        y:mouseStart.y - height
-    });
-    
+    //console.log('tooltipIn');
     
     let layer = this._findNearestLayer(event.target);
     let label = layer.attr('inkscape:label');
-    console.log('label : ' + label);
+    if (!this._labels.includes(label)) {
+        this._labels.push(label);
+        
+        const {clientX, clientY} = event;
+        let tooltip = this._tooltip.clone();
+        this._scene.append(tooltip);
+        const tooltipMatrix = tooltip.attr('transform').localMatrix;
+        
+        let sceneMatrix = this._scene.node.getScreenCTM();
+        const mouseStart = this.transformFromViewportToElement(clientX, clientY, sceneMatrix, tooltipMatrix);
+        
+        const {height} = tooltip.getBBox();
+        tooltip.attr({
+            x:mouseStart.x,
+            y:mouseStart.y - height
+        });
+        
+        let txt = tooltip.select('text');
+        txt.node.innerHTML = label;
+    }
     
-    let labelNode = SvgHelper.createTextNode(label, {
-        "x":10,
-        "y":10,
-        "font-size":"16px",
-        "fill":"#212E53"}
-    );
-    let txt = this._tooltip.select('#content');
-    txt.node.innerHTML = label;
-    /*
-    <text xml:space="preserve" style="font-size:10.6667px;line-height:1.25;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua, Normal'" x="13.13308" y="10.410368" id="text1">
-    <tspan sodipodi:role="line" id="tspan1" x="13.13308" y="10.410368">test</tspan></text>
-    */
 }
 
 
