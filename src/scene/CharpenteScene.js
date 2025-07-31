@@ -20,7 +20,7 @@ async stage(){
     
     this._scene.selectAll('g').forEach((layer)=>{
         let id = layer.node.id;
-        console.log(id);
+        //console.log(id);
         if (id != 'titre'){
             layer.addClass('clickable');
             layer.click((event)=>{

@@ -45,7 +45,7 @@
             }
 
             function setupScene(key){
-                console.log('setup scene ' + key);
+                //console.log('setup scene ' + key);
                 let classname = scenes[key].classname;
                 sceneObj = eval("new " + classname + "()");
                 let promise = sceneObj.initialize();
@@ -83,7 +83,7 @@
             <a href="#bar" onclick="navigate('bar', this)">Bar</a>
             <a href="#islands" onclick="navigate('islands', this)">Iles</a>
             <a href="#perpendiculaire" onclick="navigate('perpendiculaire', this)">Géométrie</a>
-            <a href="#charpente" onclick="navigate('charpente', this)">Géométrie</a>
+            <a href="#charpente" onclick="navigate('charpente', this)">Charpente</a>
 
         </div>
 
