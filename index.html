@@ -13,16 +13,21 @@
     </head>
 
     <body>
+        
+        
         <!-- inject:js -->
         <script src="/components/Snap.svg/dist/snap.svg-min.js"></script>
         <script src="/src/scene/Scene.js"></script>
+        <script src="/src/Anim.js"></script>
         <script src="/src/Effects.js"></script>
         <script src="/src/LinearSequence.js"></script>
         <script src="/src/SvgHelper.js"></script>
         <script src="/src/painting/IslandsPainting.js"></script>
         <script src="/src/painting/Memo.js"></script>
         <script src="/src/scene/BarScene.js"></script>
+        <script src="/src/scene/CanonScene.js"></script>
         <script src="/src/scene/CharpenteScene.js"></script>
+        <script src="/src/scene/MatrixScene.js"></script>
         <script src="/src/scene/PerpendiculaireScene.js"></script>
         <!-- endinject -->
 
@@ -41,6 +46,12 @@
                 },
                 'charpente' : {
                     classname : 'CharpenteScene'
+                },
+                'canon' : {
+                    classname : 'CanonScene'
+                },
+                'matrix' : {
+                    classname : 'MatrixScene'
                 }
             }
 
@@ -84,7 +95,8 @@
             <a href="#islands" onclick="navigate('islands', this)">Iles</a>
             <a href="#perpendiculaire" onclick="navigate('perpendiculaire', this)">Géométrie</a>
             <a href="#charpente" onclick="navigate('charpente', this)">Charpente</a>
-
+            <a href="#canon" onclick="navigate('canon', this)">Texte Anim</a>
+            <a href="#matrix" onclick="navigate('matrix', this)">Matrix</a>
         </div>
 
         <div id="scene_container">

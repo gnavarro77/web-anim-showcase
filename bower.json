@@ -5,6 +5,6 @@
   "author": "car3oon",
   "license": "BSD",
   "dependencies": {
-    "Snap.svg": "snap.svg#^0.5.1"
+    "Snap.svg": "snap.svg#^0.5.0"
   }
 }

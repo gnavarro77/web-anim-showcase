@@ -70,6 +70,16 @@ static matrixExpr(matrix){
     return expr;
 }
 
+static inpectMatrix(elt) {
+    const {local, global, total} = elt.transform();
+    console.log({
+        local:local,
+        global:global,
+        total:total
+    });
+}
+
+
 
 
 static computeCenterCoords(elt) {
