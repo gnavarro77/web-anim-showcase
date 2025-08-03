@@ -1,7 +1,13 @@
 class CanonScene extends Scene {
 
     _canon = null;
+    _tube = null;
     _roues = [];
+    _explosion = null;
+    _trajectoires = null;
+    _trajectoireContainer = null;
+    
+    _firePos = {x:0, y:0};
 
     constructor(){
         super();
@@ -16,9 +22,21 @@ class CanonScene extends Scene {
     async stage(){
         let self = this;
         this._canon = this._scene.select('#canon');
+        let {x,y,w,h} = this._canon.getBBox();
+        this._firePos = {
+            x : x + w,
+            y : y
+        };
+        
         ['#roue1','#roue2'].forEach((id) => {
             self._roues.push(self._canon.select(id));
         });
+        this._tube = this._scene.select('#tube');
+        this._explosion = this._scene.select('#explosion');
+        this._explosion.hide();
+        
+        this._trajectoireContainer = this._scene.select('#trajectoires');
+        this._trajectoires = this._trajectoireContainer.selectAll('path');
 
         let test = document.getElementById('scene_container');
         test.onclick = (()=>{
@@ -32,48 +50,70 @@ class CanonScene extends Scene {
         */
     _fire(){
         let self = this;
-        this._mouvementRecul();
+        let dur = 200;
+        let promise = self._mvtCanon(0,dur);
+        self._explosion.fadeIn(dur);
+        self._fireLetter().then((text)=>{
+            
+            //let {x,y} = text.getBBox();
+            let {localMatrix} = text.attr('transform');
+            
+            let clone = text.clone();
+            
+            text.attr({ 'textpath': '' });
+            let self = this;
+            console.log('sdkjfgmqszg');
+        });
+        //Snap.sleep(dur);
+        promise.then(()=>{
+            self._explosion.fadeOut(dur * 2);
+            self._mvtCanon(1,dur);
+        });
     }
-    
 
-    _mouvementRecul() {
+
+    _fireLetter(letter = 'A') {
         let self = this;
-        let localMatrix = this._canon.attr('transform').localMatrix;
-        let e = localMatrix.e;
-        let dur = 80;
-        let offset = -10;
-        let expr = null;
-        let val = 0;
+        let path = this._trajectoires.items[Math.floor(Math.random()*this._trajectoires.items.length)];
+        let length = path.getTotalLength();
+        console.log('length : ' + length);
+        let {x,y} = path.getBBox();
         
-        let {cx, cy} = this._canon.getBBox();
+        path = path.attr('d');
+
+        let text = this._trajectoireContainer.text(x,y,letter);
+        text.attr({ 'textpath': path });
+        text.textPath.attr({ 'startOffset': -(0.5 * length)});
+        let coeff = (length < 150)?0.2:0.4;
         
-        this._canon.animate({ transform: 's1.3274891r45,'+cx+','+cy }, 1000, mina.linear ) 
-        //this._canon._animTanslationX(offset, dur);
-        //self._wheelAnim(self._roues[0], -40, dur);
-        //self._wheelAnim(self._roues[1], -40, dur);
+        return  new Promise(async function(resolve, reject) {
+            let anim = text.textPath.animate({ 'startOffset': coeff * length }, 500, function(){
+                resolve(text);
+            } );
+        });  
     }
     
 
-    _wheelAnim(wheel, angle, dur = 1000) {
-        SvgHelper.inpectMatrix(wheel);
+    _mvtCanon(recul = 0, dur=1000) {
+        let self = this;
+        let offset = (recul == 0)? -10:10;
+        let angle = (recul == 0)? -45:45;
+        let angleCanon = (recul == 0)? -3:3;
+        
+        
+        let promise = self._canon.slide(offset, dur);
+        self._wheel(self._roues[0], angle, dur);
+        self._wheel(self._roues[1], angle, dur);
+        let {cx, cy} = self._tube.getBBox();
+        self._tube.wheel(angleCanon, {x:cx,y:cy}, dur);
+        return  promise;
+    }
+    
+
+    _wheel(wheel = null, angle = 0, dur=1000){
         let {cx, cy} = wheel.getBBox();
-        let {local, localMatrix} = wheel.transform();
-        let x = cx - localMatrix.e; 
-        let y = cy - localMatrix.f;
-        wheel._animRotate(-40,{x,y}, dur);
+        return wheel.wheel(angle, {x:cx,y:cy}, dur);
     }
-
-    
-    __pt(x,y){
-        
-        console.log('point');
-        console.log({x:x,y:y});
-        
-        let pt = this._scene.circle(x,y,2);
-        pt.attr('fill','red');
-        return pt;
-    }
-
         
 
 }

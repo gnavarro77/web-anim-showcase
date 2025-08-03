@@ -12,33 +12,22 @@ class MatrixScene extends Scene {
 
     async stage(){
         let hulk = this._scene.select('#hulk');
+        hulk.scene = this._scene;
+        
+        
+         //hulk.slide(40, 1000);
+        let {cx, cy, w, h, x, y} = hulk.getBBox();
         
         let container = document.getElementById('scene_container');
         container.onclick = (()=>{
             
-            hulk.slide(40, 1000);
+           
             
-            /*
-            let {cx, cy, x, y, width, height} = hulk.getBBox();
-            let {local, localMatrix} = hulk.attr('transform');
-            console.log(localMatrix);
-
-            let pivot = {
-                x : 200,
-                y : 100
-            };
-            console.log(localMatrix.toTransformString());
-            
-            localMatrix.e -= 20;
-            
-            let expr = null;
-            expr =Snap.asMatrixExpr(localMatrix);
-            
-            hulk.animate({ transform: expr }, 1000, mina.linear,
-                function(){
-                    console.log(localMatrix);
-                });
-                */
+            //this._scene.append(hulk.paper.pin(cx,cy));
+            let anim = hulk.wheel(45, {x:cx,y:cy}, 500);
+            //anim.then(()=>{
+                //hulk.slide(40, 1000);
+            //});
         });
         
     }
