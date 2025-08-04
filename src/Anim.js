@@ -12,6 +12,34 @@ Snap.plugin(function(Snap, Element, Paper, global) {
         return expr;
     }
     
+    Snap.hideAll = function(elements){
+        elements.forEach((element) => {
+            element.hide();
+        });
+    }
+
+    Snap.applyAnimation = function(elt, matrix, dur){
+        let expr =Snap.asMatrixExpr(matrix);
+        console.log(expr);
+        let anim = elt.node.animate({ transform: expr }, {
+            'fill':'forwards',
+            duration: dur
+        });
+        anim.finished.then(()=>{
+            elt.transform(expr);
+        });
+
+        return anim;
+    }
+    
+    Snap.sleep = function(dur=1000) {
+        return  new Promise(async function(resolve, reject) {
+            setTimeout(() => {
+                resolve();
+            }, dur);
+        });
+    }
+    
     
     Paper.prototype.pin = function(x, y, radius = 5){
         let pt = this.circle(x,y, radius);
@@ -34,11 +62,26 @@ Snap.plugin(function(Snap, Element, Paper, global) {
     */
     Element.prototype.slide = function(offset, dur = 1000){
         let self = this;
-        let {local, localMatrix} = self.attr('transform');
+        let {localMatrix} = self.attr('transform');
         localMatrix.e = localMatrix.e + offset;
         let anim = Snap.applyAnimation(self, localMatrix, dur);
         return anim.finished;
     }
+    
+    
+    
+    Element.prototype.translateTo = function(pt, dur = 1000) {
+        let self = this;
+        
+        let bbox = self.getBBox();
+        
+        let {localMatrix} = self.attr('transform');
+        localMatrix.e += (pt.x < bbox.x)?-(bbox.x-pt.x) : pt.x-bbox.x;
+        localMatrix.f += (pt.y < bbox.y)?-(bbox.y-pt.y) : pt.y-bbox.y;
+        let anim = Snap.applyAnimation(self, localMatrix, dur);
+        return anim.finished;
+    }
+    
     
     /**
     *
@@ -123,64 +166,22 @@ Snap.plugin(function(Snap, Element, Paper, global) {
     Element.prototype.wheel2 = function(angle, dur=1000) {
         let self = this;
         let {local, localMatrix} = self.attr('transform');
-        
         let animTransform = self.node.children[2];
         console.log(animTransform.attributes);
         animTransform.onanimationend = function(){
             console.log('ANIMATION ENDED');
         }
-        
-        //let split = localMatrix.split();
-        
         let {cx, cy} = self.getBBox();
         self.append(self.paper.pin(cx,cy));
-        
         let tm = TransformationMatrix;
-        
         let matrix = tm.fromObject(localMatrix)
         matrix = tm.compose([matrix,tm.rotateDEG(angle, cx, cy)]);
         let expr = tm.toSVG(matrix);
         let anim = Snap.applyAnimation(self, matrix, dur);
         return anim.finished;
-        
-        /*
-        let self = this;
-        //self.node.transform(`rotate(${angle})`);
-        let expr = `rotate(${angle}deg)`;
-        self.node.style.transform = expr;
-
-        let {local, localMatrix} = self.attr('transform');
-        //let anim = Snap.applyAnimation(self, localMatrix, dur);
-        return anim.finished;
-        */
         return null;
     }
 
-
-    Snap.applyAnimation = function(elt, matrix, dur){
-        let expr =Snap.asMatrixExpr(matrix);
-        console.log(expr);
-        let anim = elt.node.animate({ transform: expr }, {
-            'fill':'forwards',
-            duration: dur
-        });
-        anim.finished.then(()=>{
-            console.log('animation is finished');
-            ////console.log(matrix);
-            //let m = Snap.matrix(...Object.values(matrix));
-            elt.transform(expr);
-        });
-
-        return anim;
-    }
-    
-    Snap.sleep = function(dur=1000) {
-        return  new Promise(async function(resolve, reject) {
-            setTimeout(() => {
-                resolve();
-            }, dur);
-        });
-    }
     
 
 });
