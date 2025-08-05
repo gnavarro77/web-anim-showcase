@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="295.54233"
+   height="101.16177"
+   viewBox="0 0 295.54233 101.16178"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   sodipodi:docname="slice.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="2.8422325"
+     inkscape:cx="111.70796"
+     inkscape:cy="132.81813"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <rect
+       x="70.719055"
+       y="77.052109"
+       width="188.58415"
+       height="30.609739"
+       id="rect2" />
+  </defs>
+  <g
+     inkscape:label="fond"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="matrix(1,0,0,0.48362162,-0.72883439,-0.17624003)"
+     sodipodi:insensitive="true">
+    <rect
+       style="fill:#6c6753;fill-opacity:1;stroke:none;stroke-width:0.499999"
+       id="rect1"
+       width="295.54233"
+       height="209.17546"
+       x="0.72883439"
+       y="0.3644172" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="main"
+     inkscape:label="main">
+    <text
+       xml:space="preserve"
+       id="text1"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:extra-condensed;font-size:26.6667px;line-height:1.25;font-family:Algerian;-inkscape-font-specification:'Algerian Extra-Condensed';text-align:center;white-space:pre;shape-inside:url(#rect2);display:inline;fill:#ac93a7"
+       transform="translate(-19.663367,-41.77692)"><tspan
+         x="80.108291"
+         y="101.68898"
+         id="tspan1">SLICE EFFECT</tspan></text>
+  </g>
+</svg>

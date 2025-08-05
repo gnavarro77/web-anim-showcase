@@ -17,6 +17,12 @@ Snap.plugin(function(Snap, Element, Paper, global) {
             element.hide();
         });
     }
+    
+    Snap.removeAll = function(elements){
+        elements.forEach((element) => {
+            element.remove();
+        });
+    }
 
     Snap.applyAnimation = function(elt, matrix, dur){
         let expr =Snap.asMatrixExpr(matrix);
@@ -55,26 +61,109 @@ Snap.plugin(function(Snap, Element, Paper, global) {
         p += "a" + r + "," + r + " 0 1,0 " + -(r * 2) + ",0";
         return this.path(p, cx, cy);
     };
-
+    
+    
+    Paper.prototype.line = function(x1, y1, x2, y2){
+        let expr = `M${x1} ${y1} L${x2} ${y2}`;
+        return this.path(expr);
+    }
+    
+    
+    /**
+    * Glisse selon l'axe x,y (definition par offset)
+    */
+    Element.prototype.slide = function(offsetX, offsetY, dur = 1000){
+        let self = this;
+        let {localMatrix} = self.attr('transform');
+        localMatrix.e = localMatrix.e + offsetX;
+        localMatrix.f = localMatrix.f + offsetY;
+        let anim = Snap.applyAnimation(self, localMatrix, dur);
+        return anim.finished;
+    }
 
     /**
     * Glisse selon l'axe x
     */
-    Element.prototype.slide = function(offset, dur = 1000){
+    Element.prototype.slideX = function(offset, dur = 1000){
+        return this.slide(offset, 0, dur);
+    }
+    
+    /**
+    * Glisse selon l'axe y
+    */
+    Element.prototype.slideY = function(offset, dur = 1000){
+        return this.slide(0, offset, dur);
+    }
+    
+    
+    /**
+    *
+    */
+    Element.prototype.scaleY = function(sy, from = 'top',  dur=1000, ease = mina.linear) {
         let self = this;
+        let tm = TransformationMatrix;
         let {localMatrix} = self.attr('transform');
-        localMatrix.e = localMatrix.e + offset;
-        let anim = Snap.applyAnimation(self, localMatrix, dur);
-        return anim.finished;
+        let bbox = self.getBBox();
+        let cx = bbox.x;
+        let cy = (from == 'top') ? bbox.y : bbox.y+bbox.h;
+        let csy = 1;
+        return  new Promise(async function(resolve, reject) {
+            let expr = null;
+            Snap.animate(0, dur, function(time){
+                csy = localMatrix.d + (time/dur) * (sy - localMatrix.d);
+                matrix = tm.transform([
+                    tm.scale(localMatrix.a,csy, cx, cy),
+                    localMatrix
+                ]);
+                self.transform(tm.toSVG(matrix));
+            }, 
+            dur, 
+            ease,
+            function(){
+                resolve();
+            });
+           
+        });
+        
     }
     
     
     
+    /**
+    *
+    */
+    Element.prototype.scale = function(sx, sy, dur=1000, ease = mina.linear) {
+        let self = this;
+        let tm = TransformationMatrix;
+        let {localMatrix} = self.attr('transform');
+        let csx = 1;
+        let csy = 1;
+        
+        return  new Promise(async function(resolve, reject) {
+            let expr = null;
+            Snap.animate(0, dur, function(time){
+                csx = localMatrix.a + (time/dur) * (sx - localMatrix.a);
+                csy = localMatrix.d + (time/dur) * (sy - localMatrix.d);
+                matrix = tm.transform([
+                    tm.scale(csx,csy),
+                    localMatrix
+                ]);
+                self.transform(tm.toSVG(matrix));
+            }, 
+            dur, 
+            ease,
+            function(){
+                resolve();
+            });
+           
+        });
+        
+    }
+    
+    
     Element.prototype.translateTo = function(pt, dur = 1000) {
         let self = this;
-        
         let bbox = self.getBBox();
-        
         let {localMatrix} = self.attr('transform');
         localMatrix.e += (pt.x < bbox.x)?-(bbox.x-pt.x) : pt.x-bbox.x;
         localMatrix.f += (pt.y < bbox.y)?-(bbox.y-pt.y) : pt.y-bbox.y;
@@ -131,13 +220,6 @@ Snap.plugin(function(Snap, Element, Paper, global) {
     */
     Element.prototype.fadeIn = function(dur=1000, ease= mina.easeinout){
         return this.fade(1, dur, ease);
-        /*
-        let self = this;
-        return  new Promise(async function(resolve, reject) {
-            self.animate({opacity:1}, dur, ease,()=>{
-                resolve();
-            });
-        });    */
     }    
     
     /**
@@ -157,6 +239,19 @@ Snap.plugin(function(Snap, Element, Paper, global) {
                 resolve();
             });
         });    
+    }
+    
+    /**
+    *
+    */
+    Element.prototype.reversePath = function() {
+        let pathString = this.attr('d');
+        /*
+        let absolutePath = Snap.path.toAbsolute( Snap.parsePathString( pathString ) );
+        let reversedPath = absolutePath.reverse();
+        */
+        let expr = SmartSVGPath.reverse(pathString);
+        this.attr('d', expr);
     }
     
 

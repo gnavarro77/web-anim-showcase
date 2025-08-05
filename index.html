@@ -28,11 +28,9 @@
         
         <script src="/src/Effects.js"></script>
         
-        <script src="/src/Stack.js"></script>
-        
         <script src="/src/SvgHelper.js"></script>
         
-        <script src="/src/TransformationMatrix.js"></script>
+        <script src="/src/effect/SliceEffect.js"></script>
         
         <script src="/src/painting/IslandsPainting.js"></script>
         
@@ -48,30 +46,27 @@
         
         <script src="/src/scene/PerpendiculaireScene.js"></script>
         
+        <script src="/src/scene/SliceEffectScene.js"></script>
+        
+        <script src="/src/util/SmartSVGPath.js"></script>
+        
+        <script src="/src/util/Stack.js"></script>
+        
+        <script src="/src/util/TransformationMatrix.js"></script>
+        
         <!-- endinject -->
 
         <script>
             let sceneObj = null;
             
             let scenes = {
-                'islands' : {
-                    classname : 'IslandsPainting'
-                },
-                'bar' : {
-                    classname : 'BarScene'
-                },
-                'perpendiculaire' : {
-                    classname : 'PerpendiculaireScene'
-                },
-                'charpente' : {
-                    classname : 'CharpenteScene'
-                },
-                'canon' : {
-                    classname : 'CanonScene'
-                },
-                'matrix' : {
-                    classname : 'MatrixScene'
-                }
+                'islands' : {classname : 'IslandsPainting'},
+                'bar' : {classname : 'BarScene'},
+                'perpendiculaire' : {classname : 'PerpendiculaireScene'},
+                'charpente' : {classname : 'CharpenteScene'},
+                'canon' : {classname : 'CanonScene'},
+                'matrix' : {classname : 'MatrixScene'},
+                'sliceEffect' : {classname:'SliceEffectScene'}
             }
 
             function setupScene(key){
@@ -115,6 +110,7 @@
             <a href="#perpendiculaire" onclick="navigate('perpendiculaire', this)">Géométrie</a>
             <a href="#charpente" onclick="navigate('charpente', this)">Charpente</a>
             <a href="#matrix" onclick="navigate('matrix', this)">Matrix</a>
+            <a href="#sliceEffect" onclick="navigate('sliceEffect', this)">Slice Effect</a>
             <a href="#canon" onclick="navigate('canon', this)">Texte Anim</a>
         </div>
 

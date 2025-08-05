@@ -11,8 +11,8 @@ class CanonScene extends Scene {
     _firePos = {x:0, y:0};
 
     _sacDeLettres = null;
-    _citation = 'Va prendre tes leçons dans la nature';
-    //_citation = 'Va prendre';
+    //_citation = 'Va prendre tes leçons dans la nature';
+    _citation = 'va';
     _sacDeLettres = null;
     _letters = [];
 
@@ -57,6 +57,7 @@ class CanonScene extends Scene {
 
     async _run(){
         let self = this;
+        
         let isFirst = true;
         while(!this._sacDeLettres.isEmpty()) {
             await self._fire(this._sacDeLettres.pop(), isFirst);
@@ -65,23 +66,62 @@ class CanonScene extends Scene {
         
         await Snap.sleep(3000);
         
-        self._organizeLetters().then((box) => {
-            console.log('organized is finished');
-            let first = self._selectFirstText();
-            let x = first.attr('x');
-            let y = first.attr('y');
+        self._organizeLetters().then(async (box) => {
+            let citation = self._aggregateLetters(box.w);
+            //await citation.scaleY(3);
+            //await Snap.sleep(1000);
+            //self._slice(citation);
             
-            Snap.hideAll(this._trajectoireContainer.selectAll('text').items);
+            new SliceEffect(citation,{
+                'clip' : {
+                    percent : 40,
+                    color : '#c8b7c4'
+                }
+            }).run();
             
-            let citation = self._createText(x, y, self._citation);
-            citation.attr({
-                'transform': first.attr('transform'),
-                textLength : box.w,
-                lengthAdjust : 'spacing'
-            });
         });
-        
+                
     }
+    
+    /**
+    *
+    */
+    _aggregateLetters(textLength){
+        let self = this;
+        let first = self._selectFirstText();
+        let x = first.attr('x');
+        let y = first.attr('y');
+        let transform = first.attr('transform');
+        // remove all letters
+        Snap.removeAll(this._trajectoireContainer.selectAll('text').items);
+        let citation = self._createText(x, y, self._citation);
+        this._trajectoireContainer.append(citation);
+        citation.attr({
+            'transform': transform,
+            textLength : textLength,
+            lengthAdjust : 'spacing'
+        });
+        return citation;
+    }
+
+   async _slice(text){
+       return  new Promise(async function(resolve, reject) {
+            let clone = text.clone();
+            clone.attr({
+                'fill':'black',
+                'clip-path': 'inset(0% 0% 40% 0%)'
+            });
+
+            clone.animate({fill:'#0066ff'}, 1000, mina.linear,()=>{
+                resolve();
+            });
+
+            text.attr({
+                'clip-path': 'inset(60% 0% 0% 0%)'
+            });       
+       });
+    }
+
 
     /**
     * Retourne la lettre marquee comme 'la premiere'
@@ -172,7 +212,7 @@ class CanonScene extends Scene {
         let dur = 200;
         let promise = self._mvtCanon(0,dur);
         self._explosion.fadeIn(dur);
-        self._fireLetter(letter, isFirst).then((text)=>{
+        self._throwLetter(letter, isFirst).then((text)=>{
             let bbox = text.getBBox();
             text.attr({ 
                 'textpath': '',
@@ -196,16 +236,12 @@ class CanonScene extends Scene {
     /**
     * Deplace la lettre le long d'une trajectoire
     */
-    _fireLetter(letter = 'A', isFirst = false) {
+    _throwLetter(letter = 'A', isFirst = false) {
         let self = this;
         let path = self._selectRandomPath()
         let {x,y} = path.getBBox();
         let length = path.getTotalLength();
-        
-        //path = path.attr('d');
-        
         let text = self._createText(x,y,letter);
-        //text.attr('isFirst', isFirst);
         self._letters.push(text);
         text.attr({ 
             'textpath': path.attr('d'), 
@@ -213,7 +249,7 @@ class CanonScene extends Scene {
             isFirst : isFirst
         });
         text.textPath.attr({ 'startOffset': -(0.5 * length)});
-        let coeff = (length < 150)?0.2:0.4;
+        let coeff = (length < 150)?0.4:0.7;
         
         return  new Promise(async function(resolve, reject) {
             let anim = text.textPath.animate({ 'startOffset': coeff * length }, 500, function(){
@@ -226,14 +262,18 @@ class CanonScene extends Scene {
     *
     */
     _createText(x, y, content) {
-        let text = this._trajectoireContainer.text(x,y,content);
+        let text = this._trajectoireContainer.text(x,y,'');
         text.attr({ 
                  fill : "#C34A2C",
                 'stroke-width' : "0px",
-                'font-variant' : "all-small-caps",
+                //'font-variant' : "all-small-caps",
                 'font-size' : "16",
-                'font-weight' : "bold"
+                //'font-weight' : "bold"
         });
+        
+        var tspan = Snap.parse(`<tspan>${content}</tspan>`);
+        text.append(tspan);
+        
         return text;
     }
     
@@ -249,7 +289,7 @@ class CanonScene extends Scene {
         let angleCanon = (recul == 0)? -3:3;
         
         
-        let promise = self._canon.slide(offset, dur);
+        let promise = self._canon.slideX(offset, dur);
         self._wheel(self._roues[0], angle, dur);
         self._wheel(self._roues[1], angle, dur);
         let {cx, cy} = self._tube.getBBox();

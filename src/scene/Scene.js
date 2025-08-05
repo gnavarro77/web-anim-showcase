@@ -23,6 +23,27 @@ class Scene {
     };
     
 
+    _addPlayButton(){
+        let self = this;
+        return new Promise(async function(resolve, reject) {
+             Snap.load('svg/play.svg',async (frag)=>{
+                 let btn = new Snap(frag.node.firstElementChild);
+                 
+                 btn.attr({
+                     x: '2%',
+                     y: '2%',
+                     width:25,
+                     height:25
+                 });
+                 
+                 self._scene.append(btn);
+                 resolve(btn);
+             });
+        }); 
+    }
+    
+
+
 
     transformFromViewportToElement(x, y, sctm=null, elementTransform=null) {
         // Transforms coordinates from the client (viewport) coordinate
