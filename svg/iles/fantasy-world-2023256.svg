@@ -25,16 +25,21 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      inkscape:zoom="0.72604517"
-     inkscape:cx="1482.0015"
-     inkscape:cy="544.73195"
+     inkscape:cx="572.96711"
+     inkscape:cy="75.0642"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer2"
      showgrid="false" /><defs
-     id="defs1"><linearGradient
+     id="defs1"><rect
+       x="59.224965"
+       y="26.169171"
+       width="289.2382"
+       height="134.97783"
+       id="rect1" /><linearGradient
        id="eb"
        x1="232.59"
        x2="252.84"
@@ -1874,4 +1879,22 @@
    fill="#b6d333"
    d="m 184.896,160.223 c 0,0 1.361,-42.214 14.86,-42.214 13.5,0 13.853,42.214 13.853,42.214 0,0 -0.138,23.786 -14.066,23.786 -13.93,0 -14.647,-23.786 -14.647,-23.786 z"
    id="path97" />
-</g></g></g></g></svg>
+</g></g></g><g
+       inkscape:groupmode="layer"
+       id="layer2"
+       inkscape:label="intitule"><path
+         style="opacity:1;fill:#ffffff;stroke:none;stroke-width:1.32292"
+         d="m 0,41.907976 c 0,0 34.984049,8.746012 53.204908,-4.737424 C 71.425767,23.687116 54.298159,0 54.298159,0 L 0,0.72883434 Z"
+         id="path13"
+         sodipodi:nodetypes="csccc" /><text
+         xml:space="preserve"
+         transform="matrix(0.26458333,0,0,0.26458333,-23.175217,1.9951237)"
+         id="text1"
+         style="font-size:34.6667px;line-height:1.25;font-family:'Book Antiqua';-inkscape-font-specification:'Book Antiqua, Normal';text-align:center;white-space:pre;shape-inside:url(#rect1);display:inline;fill:#483e37;stroke:none"><tspan
+           x="141.82286"
+           y="55.476028"
+           id="tspan2">Cliquer 
+</tspan><tspan
+           x="124.1679"
+           y="98.809402"
+           id="tspan3">sur les îles</tspan></text></g></g></svg>

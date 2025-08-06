@@ -1,6 +1,6 @@
-class IslandsPainting  {
+class IslandsScene extends Scene  {
     
-    _container = null;
+    
     _memoObj = null;
     _memo = null;
     
@@ -80,13 +80,18 @@ class IslandsPainting  {
     
     
     constructor() {
-        //super();
+        super();
     }
 
+    getSceneUrl(){
+        return 'svg/iles/fantasy-world-2023256.svg';
+    }
     
+
+    /*
     async initialize(){
         let self = this;
-        let url = 'svg/fantasy-world-2023256.svg';
+        let url = 'svg/iles/fantasy-world-2023256.svg';
         let promise =  new Promise(async function(resolve, reject) {
              Snap.load(url,async (frag)=>{
                  self._container = new Snap(frag.node.firstElementChild);
@@ -94,7 +99,7 @@ class IslandsPainting  {
              });
         });    
         return promise;
-    }
+    }*/
 
     async stage(){
         let self = this;
@@ -140,10 +145,10 @@ class IslandsPainting  {
     async _loadMemo(){
         this._memoObj = await new Memo().initialize();
         this._memo = this._memoObj.getNode();
-        Snap.select('#root').append(this._memo);
+        this._scene.select('#root').append(this._memo);
         
         // positoning memo
-        let bbox = this._container.getBBox();
+        let bbox = this._scene.getBBox();
         let eltBbox = this._memo.getBBox();
         this._memo.attr({
             x: (bbox.r2/2) - eltBbox.r2 +'px',

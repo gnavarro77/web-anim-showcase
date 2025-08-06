@@ -16,9 +16,20 @@ class SliceEffectScene extends Scene {
 
 
         this._addPlayButton().then((btn)=>{
-            
+
             btn.click(function(){
-                new SliceEffect(text).run();
+                new SliceEffect(text,{
+                    'cut' :{
+                        'docut' : true
+                    },
+                    slide : {
+                        offsetX : 3,
+                        offsetY : 3
+                    }
+                }).run();
+                
+                btn.fadeOut();
+                
             });
         });
 

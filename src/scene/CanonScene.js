@@ -11,10 +11,12 @@ class CanonScene extends Scene {
     _firePos = {x:0, y:0};
 
     _sacDeLettres = null;
-    //_citation = 'Va prendre tes leçons dans la nature';
-    _citation = 'va';
+    _citation = 'Les Racines du ciel';
+    //_citation = 'va';
     _sacDeLettres = null;
     _letters = [];
+
+    _offsetCanon = 35;
 
     constructor(){
         super();
@@ -29,6 +31,9 @@ class CanonScene extends Scene {
     async stage(){
         let self = this;
         this._canon = this._scene.select('#canon');
+        self._canon.slideX(-self._offsetCanon, 0);
+        
+        
         let {x,y,w,h} = this._canon.getBBox();
         this._firePos = {
             x : x + w,
@@ -45,19 +50,27 @@ class CanonScene extends Scene {
         this._trajectoireContainer = this._scene.select('#trajectoires');
         this._trajectoires = this._trajectoireContainer.selectAll('path');
         Snap.hideAll(this._trajectoires);
-
-        let test = document.getElementById('scene_container');
-        test.onclick = (()=>{
-            this._run();
-        });
         
         this._sacDeLettres = new Stack(this._citation.split('').reverse());
+        
+        this._addPlayButton().then((btn)=>{
+            btn.click(async function(){
+                btn.fadeOut();
+                await self._run();
+                
+            });
+        });
+        
     }
 
 
     async _run(){
         let self = this;
         
+        // amene le canon
+        await self._canon.slideX(self._offsetCanon, 5000);
+        
+        // lancer les lettres
         let isFirst = true;
         while(!this._sacDeLettres.isEmpty()) {
             await self._fire(this._sacDeLettres.pop(), isFirst);
@@ -65,23 +78,26 @@ class CanonScene extends Scene {
         }
         
         await Snap.sleep(3000);
+        // retrait du canon
+        self._canon.slideX(-100, 10000);
         
+        // mide en position des lettres
         self._organizeLetters().then(async (box) => {
             let citation = self._aggregateLetters(box.w);
-            //await citation.scaleY(3);
-            //await Snap.sleep(1000);
-            //self._slice(citation);
+            await citation.scaleY(3,'top',2000,mina.easeinout);
+            await Snap.sleep(2000);
             
             new SliceEffect(citation,{
                 'clip' : {
                     percent : 40,
-                    color : '#c8b7c4'
+                    color : '#4d0000'
                 }
             }).run();
             
         });
                 
     }
+
     
     /**
     *
@@ -103,25 +119,6 @@ class CanonScene extends Scene {
         });
         return citation;
     }
-
-   async _slice(text){
-       return  new Promise(async function(resolve, reject) {
-            let clone = text.clone();
-            clone.attr({
-                'fill':'black',
-                'clip-path': 'inset(0% 0% 40% 0%)'
-            });
-
-            clone.animate({fill:'#0066ff'}, 1000, mina.linear,()=>{
-                resolve();
-            });
-
-            text.attr({
-                'clip-path': 'inset(60% 0% 0% 0%)'
-            });       
-       });
-    }
-
 
     /**
     * Retourne la lettre marquee comme 'la premiere'
@@ -152,7 +149,6 @@ class CanonScene extends Scene {
             h : letterBox.h,
             w : 0
         };
-        
         let offset = letterBox.w;
         
         return  new Promise(async function(resolve, reject) {
@@ -266,7 +262,7 @@ class CanonScene extends Scene {
         text.attr({ 
                  fill : "#C34A2C",
                 'stroke-width' : "0px",
-                //'font-variant' : "all-small-caps",
+                'font-variant' : "all-small-caps",
                 'font-size' : "16",
                 //'font-weight' : "bold"
         });

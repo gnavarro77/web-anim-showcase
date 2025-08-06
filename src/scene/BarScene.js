@@ -1,7 +1,5 @@
 class BarScene extends Scene{
     
-    _snap = null;
-    
     _fiche = null;
     _ficheBox = null;
     _ficheVisible = false;
@@ -13,7 +11,7 @@ class BarScene extends Scene{
     _selectedCocktail = null;
     
     constructor(){
-        
+        super();
     }
 
     getSceneUrl(){
@@ -22,7 +20,7 @@ class BarScene extends Scene{
     
     async stage(){
         this._registerCocktails();
-        this._fiche = this._snap.select('#fiche');
+        this._fiche = this._scene.select('#fiche');
         this._ficheBox = this._fiche.getBBox();
         this._fiche.attr({'width':0, 'height':0});
     }
@@ -38,7 +36,7 @@ class BarScene extends Scene{
         
         indexes.forEach((idx) => {
             id = 'cocktail_' + idx;
-            cocktail = new Snap(this._snap.select('#'+id));
+            cocktail = new Snap(this._scene.select('#'+id));
             this._cocktails[id] = cocktail;
             cocktail.click((event)=>{
                 self._onCocktailClick(event.currentTarget);
