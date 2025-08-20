@@ -20,6 +20,7 @@
         "main-bower-files": "^2.13.3"
     },
     "dependencies": {
+        "bezier-js": "^6.1.4",
         "transformation-matrix": "^3.0.0"
     }
 }

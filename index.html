@@ -22,6 +22,8 @@
         
         <script src="/components/Snap.svg/dist/snap.svg-min.js"></script>
         
+        <script src="/components/svg-pan-zoom/dist/svg-pan-zoom.js"></script>
+        
         <script src="/src/scene/Scene.js"></script>
         
         <script src="/src/Anim.js"></script>
@@ -34,7 +36,11 @@
         
         <script src="/src/effect/SliceEffect.js"></script>
         
+        <script src="/src/effect/VibrationEffect.js"></script>
+        
         <script src="/src/scene/BarScene.js"></script>
+        
+        <script src="/src/scene/BurgerScene.js"></script>
         
         <script src="/src/scene/CanonScene.js"></script>
         
@@ -48,9 +54,15 @@
         
         <script src="/src/scene/SliceEffectScene.js"></script>
         
+        <script src="/src/scene/VibrationScene.js"></script>
+        
+        <script src="/src/util/AnimValue.js"></script>
+        
         <script src="/src/util/SmartSVGPath.js"></script>
         
         <script src="/src/util/Stack.js"></script>
+        
+        <script src="/src/util/SVGPathInfo.js"></script>
         
         <script src="/src/util/TransformationMatrix.js"></script>
         
@@ -66,7 +78,9 @@
                 'charpente' : {classname : 'CharpenteScene'},
                 'canon' : {classname : 'CanonScene'},
                 'matrix' : {classname : 'MatrixScene'},
-                'sliceEffect' : {classname:'SliceEffectScene'}
+                'sliceEffect' : {classname:'SliceEffectScene'},
+                'burger' : {classname:'BurgerScene'},
+                'vibration' : {classname:'VibrationScene'}
             }
 
             function setupScene(key){
@@ -112,6 +126,9 @@
             <a href="#matrix" onclick="navigate('matrix', this)">Matrix</a>
             <a href="#sliceEffect" onclick="navigate('sliceEffect', this)">Slice Effect</a>
             <a href="#canon" onclick="navigate('canon', this)">Texte Anim</a>
+            <a href="#vibration" onclick="navigate('vibration', this)">Vibration</a>
+            
+<!--            <a href="#burger" onclick="navigate('burger', this)">Burger</a>-->
         </div>
 
         <div id="scene_container">
