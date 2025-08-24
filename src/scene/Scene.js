@@ -32,8 +32,8 @@ class Scene {
                  btn.attr({
                      x: '2%',
                      y: '2%',
-                     width:25,
-                     height:25
+                     width:'10%',
+                     height:'10%'
                  });
                  
                  self._scene.append(btn);

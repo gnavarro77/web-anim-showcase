@@ -48,11 +48,15 @@
         
         <script src="/src/scene/IslandsScene.js"></script>
         
+        <script src="/src/scene/LibelluleScene.js"></script>
+        
         <script src="/src/scene/MatrixScene.js"></script>
         
         <script src="/src/scene/PerpendiculaireScene.js"></script>
         
         <script src="/src/scene/SliceEffectScene.js"></script>
+        
+        <script src="/src/scene/ValleeScene.js"></script>
         
         <script src="/src/scene/VibrationScene.js"></script>
         
@@ -80,7 +84,9 @@
                 'matrix' : {classname : 'MatrixScene'},
                 'sliceEffect' : {classname:'SliceEffectScene'},
                 'burger' : {classname:'BurgerScene'},
-                'vibration' : {classname:'VibrationScene'}
+                'vibration' : {classname:'VibrationScene'},
+                'vallee' : {classname:'ValleeScene'},
+                'libellule' : {classname:'LibelluleScene'}
             }
 
             function setupScene(key){
@@ -123,11 +129,12 @@
             <a href="#islands" onclick="navigate('islands', this)">Iles</a>
             <a href="#perpendiculaire" onclick="navigate('perpendiculaire', this)">Géométrie</a>
             <a href="#charpente" onclick="navigate('charpente', this)">Charpente</a>
-            <a href="#matrix" onclick="navigate('matrix', this)">Matrix</a>
             <a href="#sliceEffect" onclick="navigate('sliceEffect', this)">Slice Effect</a>
             <a href="#canon" onclick="navigate('canon', this)">Texte Anim</a>
             <a href="#vibration" onclick="navigate('vibration', this)">Vibration</a>
-            
+            <a href="#matrix" onclick="navigate('matrix', this)">Matrix</a>
+            <a href="#vallee" onclick="navigate('vallee', this)">Vallée</a>
+            <a href="#libellule" onclick="navigate('libellule', this)">Libellule</a>
 <!--            <a href="#burger" onclick="navigate('burger', this)">Burger</a>-->
         </div>
 
