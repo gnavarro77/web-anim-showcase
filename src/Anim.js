@@ -68,6 +68,68 @@ Snap.plugin(function(Snap, Element, Paper, global) {
         return this.path(expr);
     }
 
+    /*
+    */
+    Element.prototype.clipOut = function(dur = 1000, from = 'top'){
+        let self = this;
+        let {x, y, w, h} = this.getBBox();
+        let top = 0;
+        let bottom = 0;
+        
+        return  new Promise(async function(resolve, reject) {
+            Snap.animate(0, dur, function(time){
+                    if (from == 'top'){
+                        top = ((time /dur) * 100).toFixed(0);
+                    } else {
+                        bottom = ((time /dur) * 100).toFixed(0);
+                    }
+                    inset = `inset(${top}% 0% ${bottom}% 0%)`;
+                    self.attr('clip-path', inset);
+                }, 
+                dur, 
+                mina.linear,
+                ()=>{resolve()}
+            );
+        });
+    }
+    
+    Element.prototype.clipOutFromTop = function(dur=1000){
+        return this.clip(0,100, dur, function(val){ return `inset(${100 - val}% 0% 0% 0%)`;});
+    }
+    
+    Element.prototype.clipOutFromBottom = function(dur=1000){
+        return this.clip(0,100, dur, function(val){ return `inset(0% 0% ${100 - val}% 0%)`;});
+    }
+    
+    Element.prototype.clipInFromBottom = function(dur=1000){
+        return this.clip(0,100, dur, function(val){ return `inset(${val}% 0% 0% 0%)`;});
+    }
+    
+    Element.prototype.clipInFromTop = function(dur=1000){
+        return this.clip(0,100, dur, function(val){ return `inset(${100-val}% 0% 0% 0%)`;});
+    }
+    
+    Element.prototype.clip = function(from=0, to=100, dur = 1000, valueResolver = function(value, from) {return `inset(${val}% 0% ${from}% 0%)`;}){
+        let self = this;
+        let val = from;
+        let range = Math.abs(to-from);
+        
+        return  new Promise(async function(resolve, reject) {
+            Snap.animate(0, dur, function(time){
+                    val = 100 - (from + Number(((time /dur) * range).toFixed(0)));
+                    //inset = `inset(${val}% 0% ${from}% 0%)`;
+                    let inset = valueResolver(val,from);
+                    self.attr('clip-path', inset);
+                }, 
+                dur, 
+                mina.linear,
+                ()=>{resolve()}
+            );
+        });
+    }    
+    
+    
+    
     Element.prototype.centerOnPoint = function(pt){
         let {cx, cy} = this.getBBox();
         let tm = TransformationMatrix;
